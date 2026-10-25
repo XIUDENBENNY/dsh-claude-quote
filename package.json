@@ -1,0 +1,65 @@
+{
+  "name": "dsh-client-ui-claude-quote",
+  "version": "0.1.0",
+  "description": "Claude Code Desktop 风格的选区引用：选中文字 → 回复 / 侧边对话，输入框引用卡片，已发送消息显示为引用块。",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "quote",
+    "reply",
+    "side-chat"
+  ],
+  "license": "MIT",
+  "author": "XIUDENBENNY",
+  "homepage": "https://github.com/XIUDENBENNY/dsh-claude-quote#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XIUDENBENNY/dsh-claude-quote.git"
+  },
+  "bugs": {
+    "url": "https://github.com/XIUDENBENNY/dsh-claude-quote/issues"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "lib",
+    "locale",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node test/parse.test.cjs"
+  },
+  "engines": {
+    "dsh": ">=0.2.1-0 <0.3.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-api-session-controller": ">=0.2.1-0 <0.3.0",
+    "@deepseek-ai/dsh-client-locale": ">=0.2.1-0 <0.3.0",
+    "@deepseek-ai/dsh-client-resources": ">=0.2.1-0 <0.3.0",
+    "@deepseek-ai/dsh-client-ui-conversation": ">=0.2.1-0 <0.3.0",
+    "@deepseek-ai/dsh-client-ui-primitives": ">=0.2.1-0 <0.3.0",
+    "@deepseek-ai/dsh-client-ui-sidebar-right": ">=0.2.1-0 <0.3.0",
+    "@deepseek-ai/dsh-client-ui-slots": ">=0.2.1-0 <0.3.0",
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  }
+}

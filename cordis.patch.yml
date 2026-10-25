@@ -1,0 +1,5 @@
+# dsh-client-ui-claude-quote 的 Loader 行。
+# 作为 profile bundle 使用时由这里插入；手动安装时把同样的一行追加到 profile 自己的 cordis.patch.yml。
+- insert:
+    - id: ui-claude-quote
+      name: dsh-client-ui-claude-quote
