@@ -1,48 +1,48 @@
 # dsh-claude-quote
 
-English | [中文](README.zh.md)
+中文 | [English](README.en.md)
 
-Claude Code Desktop–style selection quoting for the DeepSeek Harness (DSH) web and desktop client. Select text in a conversation to reply to that passage, or branch it into a side chat.
+给 DeepSeek Harness（DSH）的 Web / 桌面客户端加上 Claude Code Desktop 风格的选区引用：选中对话里的文字，就能针对这段话回复，或者拉一个侧边对话单独追问。
 
-> Not affiliated with Anthropic. "Claude-style" only means the interaction and styling follow Claude Code Desktop.
+> 本项目与 Anthropic 无关，“Claude 风格”只是说明交互和样式参照的是 Claude Code Desktop。
 
-![Floating toolbar over a selection](screenshots/toolbar.png)
+![选中文字后的浮动工具条](screenshots/toolbar.png)
 
-## Features
+## 功能
 
-- **Floating toolbar**: select at least 2 characters in a conversation and "Start a side chat | Reply" appears above the selection. When the selection spans more than one message, only the side chat is offered. Enter acts as Reply; Esc dismisses.
-- **Reply popover**: 320px wide, shows the quoted passage on top and keeps it highlighted in the conversation.
-  - Enter adds the quote and your comment to the prompt as a card
-  - Ctrl/⌘ + Enter sends it right away, bypassing the prompt
-  - Esc closes it; clicking outside also closes it while the comment is empty
-- **Quote cards in the prompt**: 120×120 cards above the prompt. Click to preview the full text, × to remove. Stack several and send them with your message.
-- **Sent messages**: quotes inside your message bubble render as a grey block with a bar on the left, the comment below it. Blocks longer than 6 lines are clamped; click to expand.
-- **Side chat**: forks the current session (history up to this point), opens it in the right sidebar titled "Side chat · <quote>", and puts the selection into its prompt as a quote. The main conversation is untouched. Once a side chat exists, the button becomes "Send to side chat"; inside a side chat only Reply is offered.
-- A single quote is capped at 1500 characters. UI strings are in Chinese and English and follow the DSH language setting.
+- **浮动工具条**：在对话里选中至少 2 个字符，选区上方出现「开始侧边对话 | 回复」。选区跨了多条消息时只给侧边对话；按 Enter 等同点「回复」，Esc 关闭。
+- **回复弹窗**：320px 宽，顶部显示被引用的原文，原文在对话里保持高亮。
+  - Enter：把「引用 + 评论」作为一张卡片放进输入框
+  - Ctrl/⌘ + Enter：不经过输入框，直接发送
+  - Esc 关闭；评论为空时点外面也会关闭
+- **输入框引用卡片**：引用在输入框上方显示为 120×120 卡片，点击预览全文，右上角 × 移除。可以叠加多张，再写正文一起发。
+- **已发送消息**：用户气泡里的引用渲染成左侧竖线的灰色引用块，评论跟在下面；超过 6 行折叠，点击展开。
+- **侧边对话**：fork 当前会话（继承到这里为止的历史），在右侧栏打开，标题为「侧边对话 · 引用开头」，并把选区作为引用放进它的输入框。主对话不受影响。同一会话再次选中时，按钮变成「发送到侧边对话」；在侧边对话里只提供「回复」。
+- 单段引用最长 1500 字，超出截断；界面支持中文和英文，跟随 DSH 的语言设置。
 
-![Reply popover](screenshots/reply.png)
-![Quote card in the prompt](screenshots/composer.png)
-![Quote block in a sent message](screenshots/sent.png)
-![Side chat](screenshots/sidechat.png)
+![回复弹窗](screenshots/reply.png)
+![输入框里的引用卡片](screenshots/composer.png)
+![已发送消息里的引用块](screenshots/sent.png)
+![侧边对话](screenshots/sidechat.png)
 
-## Wire format
+## 发送格式
 
-Same as Claude Code Desktop: quotes reach the model as plain Markdown, so no model-side support is needed.
+和 Claude Code Desktop 一样，引用以纯文本 Markdown 发给模型，模型不需要任何额外支持：
 
 ```
 <!-- reply -->
-> quoted passage
+> 被引用的原文
 
-your comment
+你的评论
 ```
 
-A quote without a comment uses `<!-- attach -->`. Only these comments at the start of a line are recognized, so mentioning them in prose is not re-rendered.
+只引用、不写评论时用 `<!-- attach -->`。插件只识别出现在行首的这两种注释，正文里提到它们不会被误渲染。
 
-## Install
+## 安装
 
-Once listed in [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin), search for `dsh-claude-quote` in the dsh-market plugin market.
+收录到 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 后，可在 dsh-market 插件市场里搜索 `dsh-claude-quote` 一键安装。
 
-Manual install (local development): clone the repo and add it to your profile's `package.json`:
+手动安装（本地开发）：把仓库克隆到本地，在 profile 的 `package.json` 里加上
 
 ```json
 {
@@ -57,21 +57,21 @@ Manual install (local development): clone the repo and add it to your profile's 
 }
 ```
 
-Append to the existing `bundles` list rather than replacing it. Run `pnpm install` in the profile directory (or link the repo as the profile's `node_modules/dsh-client-ui-claude-quote` yourself), then restart DSH. The package's own `cordis.patch.yml` inserts the loader row, so the profile's `cordis.patch.yml` needs no edit. After changing `lib/client.js`, a page reload is enough.
+（`bundles` 是追加到已有列表，不是替换），在 profile 目录执行 `pnpm install`（或手动把仓库目录链接成 profile 的 `node_modules/dsh-client-ui-claude-quote`）后重启 DSH。Loader 行由包自带的 `cordis.patch.yml` 插入，不需要再改 profile 的 `cordis.patch.yml`。改 `lib/client.js` 后刷新页面即可生效。
 
-## Compatibility
+## 兼容性
 
-- Tested on DSH 0.2.1-rc.2 (DSH Desktop, web platform).
-- The plugin relies on the conversation DOM (attributes such as `data-chat-node-key`) and on client services such as `uiConversation`, `sidebarRightTabs`, `sessions` and `resources`. These are not a stable public API, so a DSH upgrade may need a follow-up release. Please include your DSH version when filing an issue.
+- 在 DSH 0.2.1-rc.2（DSH Desktop，Web 平台）上测试。
+- 插件依赖对话区的 DOM 结构（`data-chat-node-key` 等属性）和 `uiConversation`、`sidebarRightTabs`、`sessions`、`resources` 等客户端服务，这些不是稳定的公开 API，DSH 升级后可能需要跟进。遇到问题请提 issue，并注明 DSH 版本。
 
-## Development
+## 开发
 
 ```
 npm test
 ```
 
-Runs unit tests for the wire format and parsing rules; DSH does not need to be running.
+运行发送格式与解析规则的单元测试（不需要启动 DSH）。
 
-## License
+## 许可
 
 [MIT](LICENSE)
